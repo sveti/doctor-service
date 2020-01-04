@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+
+<html lang ="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>Doctor Dashboard</title>
+
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+    </head>
+
+    <body>
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-expand-lg accent-blue fixed-top ">
+            <div class="container">
+                <a class="navbar-brand" href="#">
+                    <img th:src="@{/images/heart-rate.png}" width="30" height="30" alt="">
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="index.html">User profile <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Appointments</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Statistics
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="#">Diagnosis</a>
+                                <a class="dropdown-item" href="#">GP</a>
+                                <a class="dropdown-item" href="#">Patients</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Page Content -->
+        <div class="container">
+
+            <div class="row">
+                <div class="col-12 my-3">
+                    <h1 class="display text-center accent-orange-color">Get Number of Patients with Diagnosis</h1>
+                </div>
+                <div class="col-12">
+
+                    <form id="diagnosis" >
+
+                        <div class="form-group">
+                            <label for="diagnosis">Diagnosis *</label>
+                            <input type="text" class="form-control" id="diagnosis" required/>
+                        </div>
+                        <button type="submit" class="btn btn-lg accent-orange mt-3">Submit &raquo;</button>
+                    </form>
+                </div>
+                <div class="col-12">
+                    <div class="row mt-5">
+                        <div class="col-6">
+                            <h3 class="display text-center accent-blue-color">Number of People with diagnosis </h3>
+                        </div>
+                        <div class="col-6">
+                            <h3 class="display text-center accent-blue-color">5</h3>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container -->
+
+        <!-- Bootstrap core JavaScript -->
+        <script th:src="@{vendor/jquery/jquery.min.js}"></script>
+        <script th:src="@{vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+    </body>
+
+</html>

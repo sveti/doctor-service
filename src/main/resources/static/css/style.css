@@ -1,0 +1,42 @@
+body {
+  padding-top: 56px;
+}
+.accent-blue,.navbar-nav .dropdown-menu {
+    background-color: #0EB7B2;
+}
+.banner{
+    background: url('../images/medical%20supplies%20love%20stethoscope%20background_1128780.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+.nav-link{
+    color: #000;
+}
+.navbar-nav .dropdown-menu{
+    border:none;
+    border-radius: 0;
+    box-shadow: 1px 1px 10px #404040;
+    
+}
+.dropdown-item:focus, .dropdown-item:hover{
+  background-color: #059c97;
+    color: #fff !Important;
+}
+a:hover{
+    color: #fff;
+}
+.doctor-image{
+    max-height: 12rem;
+}
+.accent-orange{
+    background-color: #EF5F3C;
+    color: #fff;
+}
+.accent-orange-color{
+    color: #EF5F3C;
+}
+.accent-blue-color{
+    color: #0EB7B2;
+}
