@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<html lang ="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Doctor Dashboard</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" th:href="@{/vendor/bootstrap/css/bootstrap.css}" >
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+</head>
+
+<body>
+
+<!-- Page Content -->
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-12">
+            <div class="alert alert-warning" role="alert">
+                You appear to be a GP. Please select a replacement doctor for your Patients!
+            </div>
+        </div>
+        <form id="deleteForm" th:action="@{'/getReplacement/' + ${username}}"  method="post">
+
+            <div class="col-6">
+                <label for="newUsername">Username</label>
+
+            </div>
+            <div class="col-6">
+                <input type="text" class="form-control" id="newUsername" name="newUsername" />
+            </div>
+
+        </form>
+        <div class="col-12">
+            <button type="submit" form="deleteForm" class="btn btn-lg accent-orange mt-3">Submit &raquo;</button>
+        </div>
+
+    </div>
+    <!-- /.row -->
+</div>
+<!-- /.container -->
+
+<!-- Bootstrap core JavaScript -->
+<script th:src="@{vendor/jquery/jquery.js}"></script>
+<script th:src="@{vendor/bootstrap/js/bootstrap.bundle.js}"></script>
+
+</body>
+
+</html>

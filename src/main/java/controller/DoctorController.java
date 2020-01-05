@@ -3,17 +3,10 @@ package controller;
 
 import entity.Doctor;
 import entity.DoctorModelView;
-import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import service.DoctorService;
-
-import java.util.HashMap;
-import java.util.List;
 
 @RestController
 public class DoctorController {
@@ -23,6 +16,7 @@ public class DoctorController {
     @Autowired
     private DoctorService doctorService;
 
+
     @RequestMapping("/{username}")
     public ModelAndView index(@PathVariable("username") String username) {
 
@@ -31,10 +25,6 @@ public class DoctorController {
         return mav;
 
     }
-
-//    public ModelAndView login(){
-//
-//    }
 
     @GetMapping("/edit/{username}")
     public ModelAndView edit(@PathVariable("username") String username) {
@@ -49,13 +39,10 @@ public class DoctorController {
     }
 
     @RequestMapping(value = "/update/{username}", method = RequestMethod.POST)
-    public String update(@PathVariable("username") String username,@ModelAttribute DoctorModelView doctor) {
+    public ModelAndView update(@PathVariable("username") String username, @ModelAttribute DoctorModelView doctor) {
 
 
         Doctor newDoc= doctorService.getDoctor(username);
-
-        System.out.println("=====NewDoc=====");
-        System.out.println(newDoc);
 
         if(!doctor.getName().equals(newDoc.getName())){
             newDoc.setName(doctor.getName());
@@ -68,22 +55,56 @@ public class DoctorController {
         doctorService.updateDoctor(newDoc);
 
 
-        return "redirect:/{username}";
+        return new ModelAndView("redirect:/" + username);
 
     }
 
+    @RequestMapping("/deleted")
+    public ModelAndView deletesuccess() {
 
+        ModelAndView mav = new ModelAndView("successfullyDeleted");
+        return mav;
 
-
-
-//    public Doctor getDoctor(@PathVariable("username") String username) {
-//        return doctorService.getDoctor(username);
-//    }
-
-    @RequestMapping("/doctors")
-    public List<Doctor> getDoctors() {
-        return doctorService.getDoctors();
     }
+    @RequestMapping("/setReplacement/{username}")
+    public ModelAndView setReplacement(@PathVariable("username") String username) {
+
+        ModelAndView mav = new ModelAndView("setReplacement");
+        mav.addObject("username",username);
+        return mav;
+
+    }
+
+    @RequestMapping("/getReplacement/{username}")
+    public ModelAndView getReplacement(@PathVariable("username") String username, @RequestParam("newUsername") String newUsername) {
+
+        doctorService.updateGP(username,newUsername);
+        doctorService.deleteDoctor(username);
+
+        ModelAndView mav = new ModelAndView("successfullyDeleted");
+
+        return mav;
+
+    }
+
+    @RequestMapping(value = "/delete/{username}", method = RequestMethod.GET)
+    public ModelAndView delete(@PathVariable("username") String username) {
+
+        Doctor doctor = doctorService.getDoctor(username);
+        //if the doctor isn't a GP delete immediately
+        if(doctor.isGp()==false){
+            doctorService.deleteDoctor(username);
+            return new ModelAndView("redirect:/deleted");
+        }
+        //else ask for a replacement doctor
+        else{
+            return new ModelAndView("redirect:/setReplacement/" + username);
+        }
+
+    }
+
 
 
 }
+
+
