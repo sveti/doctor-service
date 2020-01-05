@@ -23,7 +23,6 @@ public class DoctorController {
     @Autowired
     private DoctorService doctorService;
 
-
     @RequestMapping("/{username}")
     public ModelAndView index(@PathVariable("username") String username) {
 
@@ -32,6 +31,10 @@ public class DoctorController {
         return mav;
 
     }
+
+//    public ModelAndView login(){
+//
+//    }
 
     @GetMapping("/edit/{username}")
     public ModelAndView edit(@PathVariable("username") String username) {
