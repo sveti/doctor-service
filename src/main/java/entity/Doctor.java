@@ -1,5 +1,8 @@
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -21,8 +24,9 @@ public class Doctor implements Serializable {
 
     private int active;
 
+    @JsonIgnore
     private List<Appointment> appointments;
-
+    @JsonIgnore
     public List<Patient> patients;
 
 
@@ -132,6 +136,9 @@ public class Doctor implements Serializable {
                 ", medicalSpeciality='" + medicalSpeciality + '\'' +
                 ", isGp=" + isGp +
                 ", roles='" + roles + '\'' +
+                ", active=" + active +
+                ", appointments=" + appointments +
+                ", patients=" + patients +
                 '}';
     }
 }

@@ -2,6 +2,7 @@ package service;
 
 import entity.Appointment;
 import entity.Doctor;
+import entity.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
@@ -21,18 +22,14 @@ public class DoctorService {
     @Autowired
     private WebClient.Builder webClientBuilder;
 
+    @Autowired
+    private AppointmentService appointmentService;
 
     public Doctor getDoctor(String username) {
         Doctor doctor = webClientBuilder.build().get().uri("http://db-producer/api/doctor/username/" + username).retrieve().bodyToMono(Doctor.class).block();
+        List<Appointment> app = appointmentService.getAppointments(username);
+        doctor.setAppointments(app);
         return doctor;
-    }
-
-
-    public List<Doctor> getDoctors() {
-        Doctor[] doctorsArray;
-        doctorsArray = webClientBuilder.build().get().uri("http://db-producer/api/doctor/doctors").retrieve().bodyToMono(Doctor[].class).block();
-        List<Doctor> doctorsList= Arrays.asList(doctorsArray);
-        return doctorsList;
     }
 
     public void updateDoctor(@RequestBody Doctor doctor){
@@ -43,7 +40,8 @@ public class DoctorService {
 //                .retrieve()
 //                .bodyToMono(Map.class)
 //                .block();
-
+        List<Appointment> appointments = appointmentService.getAppointments(doctor.getUsername());
+        doctor.setAppointments(appointments);
         final String uri = "http://localhost:8082/api/doctor/update";
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.put(uri,doctor);
@@ -53,7 +51,7 @@ public class DoctorService {
 
     public void updateGP(String username, String newDocUsername){
 
-      //  webClientBuilder.build().put().uri("http://db-producer/api/doctor/updateGP/" + username + "/"+ newDocUsername,newDocUsername);
+        //  webClientBuilder.build().put().uri("http://db-producer/api/doctor/updateGP/" + username + "/"+ newDocUsername,newDocUsername);
         final String uri = "http://localhost:8082/api/doctor/updateGP/" + username + "/"+ newDocUsername;
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.put(uri,username,newDocUsername);

@@ -43,17 +43,24 @@ public class DoctorController {
         ModelAndView mav = new ModelAndView("edit");
         Doctor dbDoctor = doctorService.getDoctor(username);
         DoctorModelView doctor = new DoctorModelView(dbDoctor.getName(), dbDoctor.getMedicalSpeciality());
-        mav.addObject("doctor", doctor);
+        mav.addObject("doctor", dbDoctor);
         mav.addObject("docUsername",username);
         return mav;
 
     }
 
     @RequestMapping(value = "/update/{username}", method = RequestMethod.POST)
-    public ModelAndView update(@PathVariable("username") String username, @ModelAttribute DoctorModelView doctor) {
+    public ModelAndView update(@PathVariable("username") String username, @ModelAttribute Doctor doctor) {
 
+
+        System.out.println("====Dcotor from view========");
+        System.out.println(doctor);
 
         Doctor newDoc= doctorService.getDoctor(username);
+
+        System.out.println("====Dcotor from db========");
+        System.out.println(newDoc);
+
 
         if(!doctor.getName().equals(newDoc.getName())){
             newDoc.setName(doctor.getName());
@@ -61,6 +68,9 @@ public class DoctorController {
         if(!doctor.getMedicalSpeciality().equals(newDoc.getMedicalSpeciality())){
             newDoc.setMedicalSpeciality(doctor.getMedicalSpeciality());
         }
+
+        System.out.println("====Pass to service====");
+        System.out.println(newDoc);
 
 
         doctorService.updateDoctor(newDoc);
