@@ -32,6 +32,7 @@ public class DoctorController {
     public ModelAndView index(@PathVariable("username") String username) {
 
         ModelAndView mav = new ModelAndView("index");
+        mav.addObject("username",username);
         mav.addObject("doctor", doctorService.getDoctor(username));
         return mav;
 
@@ -43,6 +44,7 @@ public class DoctorController {
         ModelAndView mav = new ModelAndView("edit");
         Doctor dbDoctor = doctorService.getDoctor(username);
         DoctorModelView doctor = new DoctorModelView(dbDoctor.getName(), dbDoctor.getMedicalSpeciality());
+        mav.addObject("username",username);
         mav.addObject("doctor", dbDoctor);
         mav.addObject("docUsername",username);
         return mav;
