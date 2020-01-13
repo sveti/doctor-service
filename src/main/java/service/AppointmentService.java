@@ -26,8 +26,8 @@ public class AppointmentService {
         Appointment appointment = webClientBuilder.build().get().uri("http://db-producer/api/appointment/" + id).retrieve().bodyToMono(Appointment.class).block();
 
 
-        Patient patient = webClientBuilder.build().get().uri("http://db-producer/api/patient/username/"+appointment.getPatientusername()).retrieve().bodyToMono(Patient.class).block();
-        Doctor doctor = webClientBuilder.build().get().uri("http://db-producer/api/doctor/username/" + appointment.getDoctorusername()).retrieve().bodyToMono(Doctor.class).block();
+        Patient patient = webClientBuilder.build().get().uri("http://db-producer/api/patient/findByAppointment/"+appointment.getId()).retrieve().bodyToMono(Patient.class).block();
+        Doctor doctor = webClientBuilder.build().get().uri("http://db-producer/api/doctor/findByAppointment/" +appointment.getId()).retrieve().bodyToMono(Doctor.class).block();
 
         appointment.setDoctor(doctor);
         appointment.setPatient(patient);
@@ -47,7 +47,7 @@ public class AppointmentService {
         for (Appointment appointment :asList) {
 
             appointment.setDoctor(doctor);
-            Patient patient = webClientBuilder.build().get().uri("http://db-producer/api/patient/username/"+appointment.getPatientusername()).retrieve().bodyToMono(Patient.class).block();
+            Patient patient = webClientBuilder.build().get().uri("http://db-producer/api/patient/findByAppointment/"+appointment.getId()).retrieve().bodyToMono(Patient.class).block();
             appointment.setPatient(patient);
 
         }
@@ -57,7 +57,6 @@ public class AppointmentService {
 
     public  List<Appointment> getUnfinishedAppointments(String username){
 
-        Doctor doctor = webClientBuilder.build().get().uri("http://db-producer/api/doctor/username/" + username).retrieve().bodyToMono(Doctor.class).block();
 
         List<Appointment> asList= getAppointments(username);
 
@@ -66,9 +65,6 @@ public class AppointmentService {
 
         for (Appointment appointment :asList) {
             if(appointment.getDiagnosis().equals("NOTSET")){
-                //appointment.setDoctor(doctor);
-               // Patient patient = webClientBuilder.build().get().uri("http://db-producer/api/patient/username/"+appointment.getPatientusername()).retrieve().bodyToMono(Patient.class).block();
-                //appointment.setPatient(patient);
                 unfinished.add(appointment);
             }
         }
@@ -79,8 +75,8 @@ public class AppointmentService {
 
     public void updateAppointment(@RequestBody Appointment appointment){
 
-        Patient patient = webClientBuilder.build().get().uri("http://db-producer/api/patient/username/"+appointment.getPatientusername()).retrieve().bodyToMono(Patient.class).block();
-        Doctor doctor = webClientBuilder.build().get().uri("http://db-producer/api/doctor/username/" + appointment.getDoctorusername()).retrieve().bodyToMono(Doctor.class).block();
+        Patient patient = webClientBuilder.build().get().uri("http://db-producer/api/patient/findByAppointment/"+appointment.getId()).retrieve().bodyToMono(Patient.class).block();
+        Doctor doctor = webClientBuilder.build().get().uri("http://db-producer/api/doctor/findByAppointment/" +appointment.getId()).retrieve().bodyToMono(Doctor.class).block();
 
         appointment.setPatient(patient);
         appointment.setDoctor(doctor);
