@@ -1,12 +1,20 @@
 package controller;
 
 
+import entity.Appointment;
+import entity.AppointmentModelAndView;
 import entity.Doctor;
 import entity.DoctorModelView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import service.AppointmentService;
 import service.DoctorService;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 @RestController
 public class DoctorController {
@@ -15,6 +23,9 @@ public class DoctorController {
 
     @Autowired
     private DoctorService doctorService;
+
+    @Autowired
+    private AppointmentService appointmentService;
 
 
     @RequestMapping("/{username}")
@@ -100,6 +111,58 @@ public class DoctorController {
         else{
             return new ModelAndView("redirect:/setReplacement/" + username);
         }
+
+    }
+
+    @RequestMapping("/appointments/{username}")
+    public ModelAndView appointments(@PathVariable("username") String username){
+
+        List<Appointment> appointmentList = appointmentService.getUnfinishedAppointments(username);
+
+        boolean hasAppointments = !appointmentList.isEmpty();
+
+        ModelAndView mav = new ModelAndView("appointments");
+        mav.addObject("hasAppointments",hasAppointments);
+        mav.addObject("appointments",appointmentList);
+        mav.addObject("username",username);
+
+        return mav;
+
+    }
+
+    @RequestMapping("/examination/{username}/{id}")
+    public ModelAndView examination(@PathVariable("username") String username,@PathVariable("id") Long id){
+
+        Appointment appointment = appointmentService.getAppointmentByID(id);
+        AppointmentModelAndView app = new AppointmentModelAndView();
+
+        ModelAndView mav = new ModelAndView("examination");
+        mav.addObject("username",username);
+        mav.addObject("appointment",appointment);
+        mav.addObject("app",app);
+
+        return mav;
+
+    }
+
+    @RequestMapping(value="/examinationDone/{username}/{id}",method = RequestMethod.POST)
+    public ModelAndView examinationDone(@PathVariable("username") String username,
+                                        @PathVariable("id") Long id,
+                                        @ModelAttribute("app") AppointmentModelAndView app){
+
+
+        Appointment appointment = appointmentService.getAppointmentByID(id);
+
+
+        appointment.setDiagnosis(app.getDiagnosis());
+        appointment.setSickLeaveStartDate(app.getSickLeaveStartDate());
+        appointment.setSickLeaveDays(app.getSickLeaveDays());
+        appointment.setMedication(app.getMedication());
+
+
+        appointmentService.updateAppointment(appointment);
+
+        return new ModelAndView("redirect:/appointments/" + username);
 
     }
 

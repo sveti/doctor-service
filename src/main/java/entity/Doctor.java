@@ -1,6 +1,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Doctor implements Serializable {
 
@@ -20,23 +21,12 @@ public class Doctor implements Serializable {
 
     private int active;
 
+    private List<Appointment> appointments;
 
-    public Doctor() {
-    }
+    public List<Patient> patients;
 
-/*
-    public Doctor(String name, String username, String password, String medicalSpeciality, boolean isGp, String role) {
-        this.username = username;
-        this.password = password;
-        this.name = name;
-        this.medicalSpeciality = medicalSpeciality;
-        this.isGp = isGp;
-        this.roles = role;
-        this.active = 1;
-    }
-*/
 
-    public Doctor(Long id, String username, String name, String password, String medicalSpeciality, boolean isGp, String roles, int active) {
+    public Doctor(Long id, String username, String name, String password, String medicalSpeciality, boolean isGp, String roles, int active, List<Appointment> appointments, List<Patient> patients) {
         this.id = id;
         this.username = username;
         this.name = name;
@@ -45,7 +35,13 @@ public class Doctor implements Serializable {
         this.isGp = isGp;
         this.roles = roles;
         this.active = active;
+        this.appointments = appointments;
+        this.patients = patients;
     }
+
+    public Doctor() {
+    }
+
 
     public Long getId() {
         return id;
@@ -109,6 +105,21 @@ public class Doctor implements Serializable {
 
     public void setActive(int active) {
         this.active = active;
+    }
+
+    public List<Appointment> getAppointments() {
+        return appointments;
+    }
+    public void setAppointments(List<Appointment> appointments) {
+        this.appointments = appointments;
+    }
+
+    public List<Patient> getPatients() {
+        return patients;
+    }
+
+    public void setPatients(List<Patient> patients) {
+        this.patients = patients;
     }
 
     @Override
