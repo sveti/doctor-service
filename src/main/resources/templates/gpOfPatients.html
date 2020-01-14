@@ -14,7 +14,7 @@
         <title>Doctor Dashboard</title>
 
     <!-- Bootstrap core CSS -->
-    <link th:href="@{vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/vendor/bootstrap/css/bootstrap.css}" >
 
     <!-- Custom styles for this template -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
@@ -46,7 +46,7 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" th:href="'/patientsWithDiagnosis/' + ${username}">Diagnosis</a>
-                            <a class="dropdown-item" href="#">GP</a>
+                            <a class="dropdown-item" th:href="'/gpOfPatients/' + ${username}">GP</a>
                             <a class="dropdown-item" href="#">Patients</a>
                         </div>
                     </li>
@@ -70,36 +70,23 @@
                             <h3 class="display text-center accent-blue-color">You are a gp of </h3>
                         </div>
                         <div class="col-6">
-                            <h3 class="display text-center accent-blue-color">5</h3>
+                            <h3 class="display text-center accent-blue-color" th:text="${patients.size()}" ></h3>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12">
 
-                            <table class="table">
+                            <table th:if="${patients.size()!=0}" class="table table-hover">
                                 <thead>
-                                    <tr>
-                                        <th scope="col">EGN</th>
-                                        <th scope="col">Name</th>
-
-                                    </tr>
+                                <tr>
+                                    <th scope="col">Name of Patient</th>
+                                </tr>
                                 </thead>
-                                <tbody>
+                                <th:block th:each="patient : ${patients}">
                                     <tr>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-
+                                        <td th:text="${patient.name}"></td>
                                     </tr>
-                                    <tr>
-                                        <td>Jacob</td>
-                                        <td>Thornton</td>
-
-                                    </tr>
-                                    <tr>
-                                        <td>Larry</td>
-                                        <td>the Bird</td>
-                                    </tr>
-                                </tbody>
+                                </th:block>
                             </table>
                         </div>
                     </div>
@@ -110,9 +97,10 @@
         </div>
         <!-- /.container -->
 
-        <!-- Bootstrap core JavaScript -->
-        <script th:src="@{vendor/jquery/jquery.min.js}"></script>
-        <script th:src="@{vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script th:src="@{/vendor/jquery/jquery.js}"></script>
+    <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.js}"></script>
+
     </body>
 
 </html>

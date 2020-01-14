@@ -67,6 +67,11 @@ public class DoctorService {
 
     }
 
+    public List<Patient> getPatientsGP(String username){
+        Patient[] patients = webClientBuilder.build().get().uri("http://db-producer/api/patient/findByDoctorUsername/" + username).retrieve().bodyToMono(Patient[].class).block();
+
+        return Arrays.asList(patients);
+    }
 
 
 }

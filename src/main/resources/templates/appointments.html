@@ -46,7 +46,7 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" th:href="'/patientsWithDiagnosis/' + ${username}">Diagnosis</a>
-                        <a class="dropdown-item" href="#">GP</a>
+                        <a class="dropdown-item" th:href="'/gpOfPatients/' + ${username}">GP</a>
                         <a class="dropdown-item" href="#">Patients</a>
                     </div>
                 </li>
@@ -54,6 +54,8 @@
         </div>
     </div>
 </nav>
+
+
 
 <!-- Header -->
 <header class="bg-primary py-5 mb-5 banner">
@@ -105,8 +107,8 @@
 <!-- /.container -->
 
 <!-- Bootstrap core JavaScript -->
-<script th:src="@{vendor/jquery/jquery.js}"></script>
-<script th:src="@{vendor/bootstrap/js/bootstrap.bundle.js}"></script>
+<script th:src="@{/vendor/jquery/jquery.js}"></script>
+<script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.js}"></script>
 
 </body>
 

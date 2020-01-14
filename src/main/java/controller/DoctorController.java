@@ -201,6 +201,23 @@ public class DoctorController {
 
     }
 
+    @RequestMapping("/gpOfPatients/{username}")
+    public ModelAndView gpOfPatients(@PathVariable("username") String username){
+
+        List<Patient> patients = doctorService.getPatientsGP(username);
+
+        ModelAndView mav = new ModelAndView("gpOfPatients");
+
+        mav.addObject("username",username);
+        mav.addObject("patients",patients);
+
+
+        return mav;
+
+
+
+    }
+
 }
 
 
