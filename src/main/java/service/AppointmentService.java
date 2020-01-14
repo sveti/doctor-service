@@ -85,4 +85,13 @@ public class AppointmentService {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.put(uri,appointment);
     }
+
+    public List<Patient> getPatientsByDiagnosis(String diagnosis){
+
+         Patient[] patients = webClientBuilder.build().get().uri("http://db-producer/api/appointment/appointments/patients/"+diagnosis).retrieve().bodyToMono(Patient[].class).block();
+        List<Patient> patientList =Arrays.asList(patients);
+
+        return patientList;
+
+    }
 }

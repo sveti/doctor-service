@@ -38,14 +38,14 @@
                             <a class="nav-link" th:href="'/'+${username}">User profile <span class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" th:href="'/appointments/' + ${doctor.username}">Appointments</a>
+                            <a class="nav-link" th:href="'/appointments/' + ${username}">Appointments</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Statistics
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="#">Diagnosis</a>
+                                <a class="dropdown-item" th:href="'/patientsWithDiagnosis/' + ${username}">Diagnosis</a>
                                 <a class="dropdown-item" href="#">GP</a>
                                 <a class="dropdown-item" href="#">Patients</a>
                             </div>

@@ -14,7 +14,7 @@
     <title>Doctor Dashboard</title>
 
     <!-- Bootstrap core CSS -->
-    <link th:href="@{vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/vendor/bootstrap/css/bootstrap.css}" >
 
     <!-- Custom styles for this template -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
@@ -54,25 +54,58 @@
         </div>
     </div>
 </nav>
+
 <!-- Page Content -->
 <div class="container">
 
     <div class="row">
         <div class="col-12 my-3">
-            <h1 class="display text-center accent-orange-color">Get Number of total Patients</h1>
+            <h1 class="display text-center accent-orange-color">Get Number of Patients with Diagnosis</h1>
         </div>
+        <div class="col-12">
 
+            <form id="diagnosisForm" th:action="'/getPatientsWithDiagnosis/' + ${username}">
+
+                <div th:object="${diagnosis}" class="form-group">
+                    <label for="diagnosis">Diagnosis *</label>
+                    <input type="text" class="form-control" id="diagnosis" name="diagnosis" th:value="*{diagnosis}" required/>
+                    <button class="btn btn-lg accent-orange mt-3" type="submit">Check &raquo;</button>
+
+                </div>
+
+            </form>
+
+        </div>
         <div class="col-12">
             <div class="row mt-5">
                 <div class="col-6">
                     <h3 class="display text-center accent-blue-color">Number of People with diagnosis </h3>
                 </div>
                 <div class="col-6">
-                    <h3 class="display text-center accent-blue-color">5</h3>
+                    <h3 class="display text-center accent-blue-color" th:text="${patients.size()}"></h3>
                 </div>
             </div>
 
+            <div class="row">
+
+                <div class="col-12">
+
+                    <table th:if="${patients.size()!=0}" class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">Name of Patient</th>
+                        </tr>
+                        </thead>
+                        <th:block th:each="patient : ${patients}">
+                            <tr>
+                                <td th:text="${patient.name}"></td>
+                            </tr>
+                        </th:block>
+                    </table>
+                </div>
+            </div>
         </div>
+
     </div>
     <!-- /.row -->
 </div>
@@ -81,7 +114,6 @@
 <!-- Bootstrap core JavaScript -->
 <script th:src="@{vendor/jquery/jquery.min.js}"></script>
 <script th:src="@{vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
-
 </body>
 
 </html>

@@ -12,9 +12,8 @@
         <meta name="author" content="">
 
         <title>Doctor Dashboard</title>
-
     <!-- Bootstrap core CSS -->
-    <link th:href="@{vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/vendor/bootstrap/css/bootstrap.css}" >
 
     <!-- Custom styles for this template -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
@@ -38,14 +37,14 @@
                         <a class="nav-link" th:href="'/'+${username}">User profile <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="'/appointments/' + ${doctor.username}">Appointments</a>
+                        <a class="nav-link" th:href="'/appointments/' + ${username}">Appointments</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Statistics
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Diagnosis</a>
+                            <a class="dropdown-item" th:href="'/patientsWithDiagnosis/' + ${username}">Diagnosis</a>
                             <a class="dropdown-item" href="#">GP</a>
                             <a class="dropdown-item" href="#">Patients</a>
                         </div>
@@ -64,25 +63,19 @@
                 </div>
                 <div class="col-12">
 
-                    <form id="diagnosisForm" >
+                    <form id="diagnosisForm" th:action="'/getPatientsWithDiagnosis/' + ${username}">
 
-                        <div class="form-group">
+                        <div th:object="${diagnosis}" class="form-group">
                             <label for="diagnosis">Diagnosis *</label>
-                            <input type="text" class="form-control" id="diagnosis" required/>
-                        </div>
-                        <button type="submit" class="btn btn-lg accent-orange mt-3">Submit &raquo;</button>
-                    </form>
-                </div>
-                <div class="col-12">
-                    <div class="row mt-5">
-                        <div class="col-6">
-                            <h3 class="display text-center accent-blue-color">Number of People with diagnosis </h3>
-                        </div>
-                        <div class="col-6">
-                            <h3 class="display text-center accent-blue-color">5</h3>
-                        </div>
-                    </div>
+                            <input type="text" class="form-control" id="diagnosis" name="diagnosis" th:value="*{diagnosis}" required/>
+                            <button class="btn btn-lg accent-orange mt-3" type="submit">Check &raquo;</button>
 
+                        </div>
+
+                    </form>
+
+
+<!--                   <a class="btn btn-lg accent-orange mt-3" th:href="'/getPatientsWithDiagnosis/' + ${username}" role="button">Check &raquo;</a>-->
                 </div>
 
             </div>

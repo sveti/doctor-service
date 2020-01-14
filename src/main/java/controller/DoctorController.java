@@ -1,24 +1,17 @@
 package controller;
 
 
-import entity.Appointment;
-import entity.AppointmentModelAndView;
-import entity.Doctor;
-import entity.DoctorModelView;
+import entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import service.AppointmentService;
 import service.DoctorService;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 @RestController
 public class DoctorController {
-
 
 
     @Autowired
@@ -32,7 +25,7 @@ public class DoctorController {
     public ModelAndView index(@PathVariable("username") String username) {
 
         ModelAndView mav = new ModelAndView("index");
-        mav.addObject("username",username);
+        mav.addObject("username", username);
         mav.addObject("doctor", doctorService.getDoctor(username));
         return mav;
 
@@ -44,9 +37,9 @@ public class DoctorController {
         ModelAndView mav = new ModelAndView("edit");
         Doctor dbDoctor = doctorService.getDoctor(username);
         DoctorModelView doctor = new DoctorModelView(dbDoctor.getName(), dbDoctor.getMedicalSpeciality());
-        mav.addObject("username",username);
+        mav.addObject("username", username);
         mav.addObject("doctor", dbDoctor);
-        mav.addObject("docUsername",username);
+        mav.addObject("docUsername", username);
         return mav;
 
     }
@@ -58,16 +51,16 @@ public class DoctorController {
         System.out.println("====Dcotor from view========");
         System.out.println(doctor);
 
-        Doctor newDoc= doctorService.getDoctor(username);
+        Doctor newDoc = doctorService.getDoctor(username);
 
         System.out.println("====Dcotor from db========");
         System.out.println(newDoc);
 
 
-        if(!doctor.getName().equals(newDoc.getName())){
+        if (!doctor.getName().equals(newDoc.getName())) {
             newDoc.setName(doctor.getName());
         }
-        if(!doctor.getMedicalSpeciality().equals(newDoc.getMedicalSpeciality())){
+        if (!doctor.getMedicalSpeciality().equals(newDoc.getMedicalSpeciality())) {
             newDoc.setMedicalSpeciality(doctor.getMedicalSpeciality());
         }
 
@@ -89,11 +82,12 @@ public class DoctorController {
         return mav;
 
     }
+
     @RequestMapping("/setReplacement/{username}")
     public ModelAndView setReplacement(@PathVariable("username") String username) {
 
         ModelAndView mav = new ModelAndView("setReplacement");
-        mav.addObject("username",username);
+        mav.addObject("username", username);
         return mav;
 
     }
@@ -101,7 +95,7 @@ public class DoctorController {
     @RequestMapping("/getReplacement/{username}")
     public ModelAndView getReplacement(@PathVariable("username") String username, @RequestParam("newUsername") String newUsername) {
 
-        doctorService.updateGP(username,newUsername);
+        doctorService.updateGP(username, newUsername);
         doctorService.deleteDoctor(username);
 
         ModelAndView mav = new ModelAndView("successfullyDeleted");
@@ -115,52 +109,52 @@ public class DoctorController {
 
         Doctor doctor = doctorService.getDoctor(username);
         //if the doctor isn't a GP delete immediately
-        if(doctor.isGp()==false){
+        if (doctor.isGp() == false) {
             doctorService.deleteDoctor(username);
             return new ModelAndView("redirect:/deleted");
         }
         //else ask for a replacement doctor
-        else{
+        else {
             return new ModelAndView("redirect:/setReplacement/" + username);
         }
 
     }
 
     @RequestMapping("/appointments/{username}")
-    public ModelAndView appointments(@PathVariable("username") String username){
+    public ModelAndView appointments(@PathVariable("username") String username) {
 
         List<Appointment> appointmentList = appointmentService.getUnfinishedAppointments(username);
 
         boolean hasAppointments = !appointmentList.isEmpty();
 
         ModelAndView mav = new ModelAndView("appointments");
-        mav.addObject("hasAppointments",hasAppointments);
-        mav.addObject("appointments",appointmentList);
-        mav.addObject("username",username);
+        mav.addObject("hasAppointments", hasAppointments);
+        mav.addObject("appointments", appointmentList);
+        mav.addObject("username", username);
 
         return mav;
 
     }
 
     @RequestMapping("/examination/{username}/{id}")
-    public ModelAndView examination(@PathVariable("username") String username,@PathVariable("id") Long id){
+    public ModelAndView examination(@PathVariable("username") String username, @PathVariable("id") Long id) {
 
         Appointment appointment = appointmentService.getAppointmentByID(id);
         AppointmentModelAndView app = new AppointmentModelAndView();
 
         ModelAndView mav = new ModelAndView("examination");
-        mav.addObject("username",username);
-        mav.addObject("appointment",appointment);
-        mav.addObject("app",app);
+        mav.addObject("username", username);
+        mav.addObject("appointment", appointment);
+        mav.addObject("app", app);
 
         return mav;
 
     }
 
-    @RequestMapping(value="/examinationDone/{username}/{id}",method = RequestMethod.POST)
+    @RequestMapping(value = "/examinationDone/{username}/{id}", method = RequestMethod.POST)
     public ModelAndView examinationDone(@PathVariable("username") String username,
                                         @PathVariable("id") Long id,
-                                        @ModelAttribute("app") AppointmentModelAndView app){
+                                        @ModelAttribute("app") AppointmentModelAndView app) {
 
 
         Appointment appointment = appointmentService.getAppointmentByID(id);
@@ -178,7 +172,34 @@ public class DoctorController {
 
     }
 
+    @RequestMapping("/patientsWithDiagnosis/{username}")
+    public ModelAndView patientsWithDiagnosis(@PathVariable("username") String username) {
 
+        DiagnosisModelAndView diagnosisModelAndView = new DiagnosisModelAndView();
+
+        ModelAndView mav = new ModelAndView("patientsWithDiagnosis");
+
+        String diagnosis = "";
+        mav.addObject("diagnosis",diagnosisModelAndView);
+        mav.addObject("username", username);
+        return mav;
+
+    }
+
+    @RequestMapping("/getPatientsWithDiagnosis/{username}")
+    public ModelAndView getPatientsWithDiagnosis(@PathVariable("username") String username,
+                                                 @ModelAttribute("diagnosis") DiagnosisModelAndView diagnosis) {
+        DiagnosisModelAndView diagnosisModelAndView = new DiagnosisModelAndView();
+
+        List<Patient> patients = appointmentService.getPatientsByDiagnosis(diagnosis.getDiagnosis());
+
+        ModelAndView mav = new ModelAndView("getPatientsWithDiagnosis");
+        mav.addObject("patients",patients);
+        mav.addObject("username", username);
+        mav.addObject("diagnosis",diagnosisModelAndView);
+        return mav;
+
+    }
 
 }
 
