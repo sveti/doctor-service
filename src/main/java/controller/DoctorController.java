@@ -214,8 +214,35 @@ public class DoctorController {
 
         return mav;
 
+    }
+
+    @RequestMapping("/totalAppointments/{username}")
+    public ModelAndView totalAppointments(@PathVariable("username") String username){
 
 
+        List<Appointment> appointments = appointmentService.getAppointments(username);
+
+        ModelAndView mav = new ModelAndView("totalAppointments");
+
+        mav.addObject("username",username);
+        mav.addObject("appointments",appointments);
+
+
+        return mav;
+    }
+
+    @RequestMapping("/seeappointment/{username}/{id}")
+    public ModelAndView seeappointment(@PathVariable("username")String username,
+                                       @PathVariable("id") Long id) {
+
+        Appointment appointment = appointmentService.getAppointmentByID(id);
+
+        ModelAndView mav = new ModelAndView("seeAppointment");
+        mav.addObject("appointment",appointment);
+        mav.addObject("username",username);
+
+
+        return mav;
     }
 
 }

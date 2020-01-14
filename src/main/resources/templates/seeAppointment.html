@@ -14,7 +14,7 @@
     <title>Doctor Dashboard</title>
 
     <!-- Bootstrap core CSS -->
-    <link th:href="@{vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
@@ -47,7 +47,7 @@
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" th:href="'/patientsWithDiagnosis/' + ${username}">Diagnosis</a>
                         <a class="dropdown-item" th:href="'/gpOfPatients/' + ${username}">GP</a>
-                        <a class="dropdown-item" href="#">Patients</a>
+                        <a class="dropdown-item" th:href="'/totalAppointments/' + ${username}">All Appointments</a>
                     </div>
                 </li>
             </ul>
@@ -57,24 +57,67 @@
 <!-- Page Content -->
 <div class="container">
 
-    <div class="row">
-        <div class="col-12 my-3">
-            <h1 class="display text-center accent-orange-color">Get Number of total Patients</h1>
+    <div class="row mt-5">
+
+        <div class="col-6">
+
+            <p>Diagnosis</p>
+
         </div>
+        <div class="col-6">
+            <p th:text="${appointment.diagnosis}"></p>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-6">
+
+            <p>Medication</p>
+
+        </div>
+        <div class="col-6">
+            <p th:text="${appointment.medication}"></p>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-6">
+
+            <p>Sick leave start Date</p>
+
+        </div>
+        <div class="col-6">
+            <p th:text="${appointment.sickLeaveStartDate}"></p>
+
+        </div>
+
+    </div>
+    <div class="row">
+
+        <div class="col-6">
+
+            <p>Sick leave duration</p>
+
+        </div>
+        <div class="col-6">
+            <p th:text="${appointment.sickLeaveDays}"></p>
+
+        </div>
+
+    </div>
+    <div class="row">
 
         <div class="col-12">
-            <div class="row mt-5">
-                <div class="col-6">
-                    <h3 class="display text-center accent-blue-color">Number of People with diagnosis </h3>
-                </div>
-                <div class="col-6">
-                    <h3 class="display text-center accent-blue-color">5</h3>
-                </div>
-            </div>
-
+            <a th:href="'/totalAppointments/' + ${username}" class="btn btn-lg btn-warning mt-3">« Back</a>
         </div>
     </div>
-    <!-- /.row -->
+
 </div>
 <!-- /.container -->
 
