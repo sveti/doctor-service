@@ -19,6 +19,9 @@ public class AppointmentService {
     @Autowired
     private WebClient.Builder webClientBuilder;
 
+    @Autowired
+    private AppointmentService appointmentService;
+
 
     public Appointment getAppointmentByID(Long id){
 
@@ -53,6 +56,23 @@ public class AppointmentService {
         }
         return asList;
 
+    }
+
+    public List<Appointment> getAppointmentsByPatient(String username){
+
+        Appointment[] appointments;
+        Doctor doctor = webClientBuilder.build().get().uri("http://db-producer/api/doctor/username/" + username).retrieve().bodyToMono(Doctor.class).block();
+
+        appointments = webClientBuilder.build().get().uri("http://db-producer/api/appointment/appointments/patient/" + username).retrieve().bodyToMono(Appointment[].class).block();
+        List<Appointment> asList= Arrays.asList(appointments);
+        for (Appointment app :asList) {
+
+            app.setDoctor(doctor);
+            Patient patient = webClientBuilder.build().get().uri("http://db-producer/api/patient/findByAppointment/"+app.getId()).retrieve().bodyToMono(Patient.class).block();
+            app.setPatient(patient);
+
+        }
+        return asList;
     }
 
     public  List<Appointment> getUnfinishedAppointments(String username){
@@ -94,4 +114,17 @@ public class AppointmentService {
         return patientList;
 
     }
+
+    public Patient getPatientByUsername(String username){
+
+        Patient patient = webClientBuilder.build().get().uri("http://db-producer/api/patient/username/" + username).retrieve().bodyToMono(Patient.class).block();
+        Doctor doctor =  webClientBuilder.build().get().uri("http://db-producer/api/patient/" + username+"/doctor").retrieve().bodyToMono(Doctor.class).block();
+        patient.setDoctorGp(doctor);
+
+        List<Appointment> app = appointmentService.getAppointmentsByPatient(username);
+        patient.setAppointments(app);
+
+        return patient;
+    }
+
 }

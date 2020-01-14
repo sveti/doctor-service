@@ -245,6 +245,21 @@ public class DoctorController {
         return mav;
     }
 
+    @RequestMapping("/patientMedicalHistory/{username}/{patientUsername}")
+    public ModelAndView patientMedicalHistory(@PathVariable("username")String username,
+                                       @PathVariable("patientUsername") String patientUsername) {
+
+
+        Patient patient = appointmentService.getPatientByUsername(patientUsername);
+
+        ModelAndView mav = new ModelAndView("patientMedicalHistory");
+        mav.addObject("username",username);
+        mav.addObject("appointments",patient.getAppointments());
+
+
+        return mav;
+    }
+
 }
 
 

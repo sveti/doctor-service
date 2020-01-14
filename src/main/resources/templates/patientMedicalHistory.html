@@ -4,7 +4,6 @@
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 
-
 <head>
 
     <meta charset="utf-8">
@@ -15,7 +14,7 @@
     <title>Doctor Dashboard</title>
 
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" th:href="@{/vendor/bootstrap/css/bootstrap.css}" >
+    <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
@@ -55,43 +54,55 @@
         </div>
     </div>
 </nav>
-
-
 <!-- Page Content -->
 <div class="container">
 
     <div class="row">
         <div class="col-12 my-3">
-            <h1 class="display text-center accent-orange-color">Examination</h1>
+            <h1 class="display text-center accent-orange-color">Patient medical history</h1>
         </div>
 
-        <hr>
-        <div class="col-12 my-3">
-            <a class="btn btn-primary" th:href="'/patientMedicalHistory/'+${username}+'/'+${appointment.patient.username}" role="button" target="_blank" >See Medical History of Patient &raquo;</a>
-        </div>
-
-
-        <hr>
         <div class="col-12">
-            <form id="examinationForm" th:object="${app}" th:method="post" th:action="'/examinationDone/' + ${username} + '/' + ${appointment.getId()}" >
-                <div class="form-group">
-                    <label for="diagnosis">Diagnosis *</label>
-                    <input type="text" class="form-control" id="diagnosis" th:field="*{diagnosis}" required/>
+            <div class="row mt-5">
+                <div class="col-6">
+                    <h3 class="display text-center accent-blue-color">Number of appointments of Patient </h3>
                 </div>
-                <div class="form-group">
-                    <label for="medication" >Medication</label>
-                    <textarea class="form-control" id="medication" th:field="*{medication}" rows="3"></textarea>
+                <div class="col-6">
+                    <h3 class="display text-center accent-blue-color" th:text="${appointments.size()}"></h3>
                 </div>
-                <div class="form-group">
-                    <label for="sickLeaveDate">Start date of Sick Leave</label>
-                    <input type="date" class="form-control" id="sickLeaveDate"  th:field="*{sickLeaveStartDate}">
+
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+
+                    <table th:if="${appointments.size()!=0}" class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">Name of Patient</th>
+                            <th scope="col">Date of Appointment</th>
+                            <th scope="col">Diagnosis</th>
+                            <th scope="col">Sick leave start date</th>
+                            <th scope="col">Sick leave duration</th>
+
+
+
+                        </tr>
+                        </thead>
+                        <th:block th:each="appointment : ${appointments}">
+                            <tr th:if='${!appointment.getDiagnosis().equals("NOTSET")}'>
+                                <td th:text="${appointment.patient.name}"></td>
+                                <td th:text="${appointment.dateOfAppointment}"></td>
+                                <td th:text="${appointment.diagnosis}"></td>
+                                <td th:text="${appointment.sickLeaveStartDate}"></td>
+                                <td th:text="${appointment.sickLeaveDays}"></td>
+
+                            </tr>
+                        </th:block>
+                    </table>
                 </div>
-                <div class="form-group">
-                    <label for="sickLeaveDuration">Sick Leave Duration</label>
-                    <input type="number" class="form-control" id="sickLeaveDuration" th:field="*{sickLeaveDays}" >
-                </div>
-                <button type="submit" class="btn btn-lg accent-orange mt-3">Submit &raquo;</button>
-            </form>
+            </div>
+
         </div>
     </div>
     <!-- /.row -->
@@ -101,6 +112,7 @@
 <!-- Bootstrap core JavaScript -->
 <script th:src="@{/vendor/jquery/jquery.js}"></script>
 <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.js}"></script>
+
 </body>
 
 </html>
