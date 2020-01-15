@@ -20,7 +20,7 @@
 ////   public SecurityConfiguration(UserPrincipalDetailsService userPrincipalDetailsService) {
 ////      this.userPrincipalDetailsService = userPrincipalDetailsService;
 ////   }
-//
+////
 ////   @Override
 ////   protected void configure(AuthenticationManagerBuilder auth) {
 ////      auth.authenticationProvider(authenticationProvider());
@@ -35,7 +35,7 @@
 //            .and()
 //            // add jwt filters (1. authentication, 2. authorization)
 //            //.addFilter(new JwtAuthenticationFilter(authenticationManager()))
-//            .addFilter(new JwtAuthorizationFilter(authenticationManager()))
+//            //.addFilter(new JwtAuthorizationFilter(authenticationManager()))
 //            .authorizeRequests()
 //            //.antMatchers(HttpMethod.POST, "/login").anonymous()
 //            // configure access rules
