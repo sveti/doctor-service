@@ -5,6 +5,7 @@ import entity.Doctor;
 import entity.Patient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -72,6 +73,16 @@ public class DoctorService {
         Patient[] patients = webClientBuilder.build().get().uri("http://db-producer/api/patient/findByDoctorUsername/" + username).retrieve().bodyToMono(Patient[].class).block();
 
         return Arrays.asList(patients);
+    }
+
+    public boolean getAuthToken(String username){
+        RestTemplate r = new RestTemplate();
+        //String uri = "http://localhost:8082/api/doctor/getToken/" + username;
+        //ResponseEntity<String> authTOken = r.getForEntity(uri, String.class);
+        //System.out.println("auth token: "+ authTOken.getBody().trim());
+        String authTOken = webClientBuilder.build().get().uri("http://db-producer/api/doctor/getToken/" + username).retrieve().bodyToMono(String.class).block();
+        System.out.println(authTOken + " token");
+        return authTOken != null;
     }
 
 
